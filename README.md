@@ -14,11 +14,9 @@ This specification is **not** official documentation and is **not affiliated** w
 
 This document describes the binary format through **reverse engineering** for compatibility, preservation, and educational purposes only. 
 
-**Original Software**: DOS Menu Works 2.10
-
-**Purpose of this spec**: Enable interoperability with legacy DOS systems and retro computing environments  
-
-**Use case**: Educational research, software preservation, DOS emulation support
+- **Original Software**: DOS Menu Works 2.10
+- **Purpose of this spec**: Enable interoperability with legacy DOS systems and retro computing environments  
+- **Use case**: Educational research, software preservation, DOS emulation support
 
 **No copyright infringement intended**. This specification is provided under educational fair use principles related to interoperability and software preservation.
 
