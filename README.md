@@ -410,50 +410,94 @@ Menu Works stores CRC/checksum protection on label and command fields, preventin
 
 ```python
 #!/usr/bin/env python3
-"""Generate MENU.MDF from a template file."""
+#!/usr/bin/env python3
+"""Generate MENU.MDF with multiple items from template."""
 
-def generate_menu(template_path, output_path, menu_name, menu_title):
+import struct
+
+def generate_menu(template_path, output_path, menu_name, menu_title, items):
     """
-    Create MENU.MDF by modifying a template file.
-    
     Args:
-        template_path: Path to valid MENU.MDF template
-        output_path: Path to write new MENU.MDF
-        menu_name: New menu name (e.g., "GAMES")
-        menu_title: New menu title (e.g., "My Game Menu")
+        items: List of dicts: {"label": str, "path": str, "command": str, 
+               "memory": "HIGH"|"LOW", "is_exit": bool}
     """
-    # Load template (preserves record section intact)
     with open(template_path, 'rb') as f:
         data = bytearray(f.read())
     
-    # Preserve bytes 0-240 (header + record section)
-    # Modify menu header starting at offset 241
-    
-    # Menu name: offset 241 = length byte, then name
-    name_bytes = menu_name.encode('ascii')
+    # Update menu header (offset 241+)
+    name_bytes = menu_name.encode('ascii')[:8]
     data[241] = len(name_bytes)
     data[242:242 + len(name_bytes)] = name_bytes
     
-    # Title: offset varies based on name length
-    # Formula: 242 + name_length + 1 (null) + 4 (padding)
-    title_offset = 242 + len(name_bytes) + 1 + 4
+    title_offset = 242 + len(name_bytes) + 5
     title_bytes = menu_title.encode('ascii')
     data[title_offset:title_offset + len(title_bytes)] = title_bytes
     
-    # Write output
+    # Resize file: 309 + 119 + (items-1)*114
+    item_count = len(items)
+    new_size = 309 + 119 + max(0, (item_count - 1)) * 114
+    data.extend(b'\x00' * (new_size - len(data)))
+    
+    # Update record section for multi-item mode
+    data[286] = item_count
+    if item_count > 1:
+        data[316] = 0x00
+        data[407:409] = b'\x78\x6c'
+    
+    # Add items starting after menu header
+    item_offset = title_offset + len(title_bytes) + 1
+    
+    for idx, item in enumerate(items):
+        if item.get('is_exit'):
+            # EXIT item (94 bytes)
+            data[item_offset] = 0xF1 if idx == 0 else 0x03
+            label = item.get('label', 'Exit').encode('ascii')[:33]
+            data[item_offset + 2:item_offset + 35] = label.ljust(33)
+            data[item_offset + 35] = 0x02
+            item_offset += 94
+        else:
+            # Game item
+            size = 119 if idx == 0 else 114
+            prefix_offset = item_offset
+            data_offset = item_offset + (1 if idx == 0 else 2)
+            
+            if idx == 0:
+                data[prefix_offset] = 0xF1
+            else:
+                data[prefix_offset:prefix_offset + 2] = b'\x03\x00'
+            
+            # Label (44 bytes), Path (44 bytes)
+            label = item.get('label', '').encode('ascii')[:44]
+            path = item.get('path', '').encode('ascii')[:44]
+            data[data_offset:data_offset + 44] = label.ljust(44)
+            data[data_offset + 44:data_offset + 88] = path.ljust(44)
+            
+            # Metadata
+            cmd = item.get('command', '').encode('ascii')
+            cmd_len = len(cmd)
+            mem_mode = 0x01 if item.get('memory') == 'HIGH' else 0x00
+            data[data_offset + 88:data_offset + 101] = (
+                b'\x00\x00\x00\x00\x01' + bytes([cmd_len]) + 
+                b'\x00\x00\x00' + bytes([mem_mode]) + b'\x00\x00\x00'
+            )
+            
+            # Command string
+            data[data_offset + 101:data_offset + 101 + cmd_len] = cmd
+            data[data_offset + 101 + cmd_len] = 0x00
+            
+            item_offset += size
+    
     with open(output_path, 'wb') as f:
         f.write(data)
-    
-    print(f"Generated {output_path} ({len(data)} bytes)")
 
-# Usage example
 if __name__ == "__main__":
-    generate_menu(
-        template_path="template.mdf",
-        output_path="output.mdf",
-        menu_name="MAIN",
-        menu_title="Main Menu"
-    )
+    items = [
+        {"label": "Game1", "path": "C:\\GAMES\\GAME1", "command": "GAME1.EXE", "memory": "HIGH"},
+        {"label": "Game2", "path": "C:\\GAMES\\GAME2", "command": "GAME2.EXE", "memory": "LOW"},
+        {"label": "Exit", "is_exit": True},
+    ]
+    
+    generate_menu("template.mdf", "output.mdf", "GAMES", "Game Menu", items)
 ```
 
 **Key Points**:
