@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides a technical specification for the binary format of `MENU.MDF` files used by DOS [Menu Works](https://www.peteravritch.com/portfolio/menuworks21) 2.10, a DOS-era menu system and launcher application created by PC Dynamics, Inc in 1988. The format has been reverse-engineered through binary analysis, structural comparison, and empirical testing across multiple file samples.
+This document provides a technical specification for the binary format of `MENU.MDF` files used by DOS [Menu Works](https://www.peteravritch.com/portfolio/menuworks21) 2.10, a DOS-era menu system and launcher application created by PC Dynamics, Inc in 1988. The format has been partially reverse-engineered through binary analysis, structural comparison, and empirical testing across multiple file samples.
 
 **Scope**: File header structure, record sections, menu/item data layouts, password protection, and file sizing formulas validated up to 56 menu items.
 
