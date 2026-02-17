@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides a technical specification for the binary format of `MENU.MDF` files used by DOS [Menu Works](https://www.peteravritch.com/portfolio/menuworks21) 2.10, a DOS-era menu system and launcher application created by PC Dynamics, Inc in 1988. The format has been partially reverse-engineered through binary analysis, structural comparison, and empirical testing across multiple file samples.
+This document provides a technical specification for the binary format of `MENU.MDF` files used by DOS [Menu Works](https://www.peteravritch.com/portfolio/menuworks21) 2.10, a DOS-era menu system and launcher application created by PC Dynamics, Inc in 1987. The format has been partially reverse-engineered through binary analysis, structural comparison, and empirical testing across multiple file samples, to the point a new menu can be dynamically created and loaded successfully.
 
 **Scope**: File header structure, record sections, menu/item data layouts, password protection, and file sizing formulas validated up to 56 menu items.
 
@@ -28,7 +28,7 @@ DOS Menu Works 2.10 was a sophisticated menu system for its era, offering extens
 
 - **Multiple menus**: Support for organizing items across multiple named menus, each with custom titles
 - **Nested/submenu structure**: Menus can reference other menus, enabling hierarchical navigation and complex menu trees
-- **Menu-level configuration**: Each menu maintains independent settings for display, access control, and behavior
+- **Menu-level configuration**: Each menu maintains independent menu items and access control
 
 ### Security & Access Control
 
@@ -48,8 +48,8 @@ DOS Menu Works 2.10 was a sophisticated menu system for its era, offering extens
 
 ### User Interface & Customization
 
-- **Custom help instructions**: Support for context-sensitive or global help text displayed to users
-- **Custom colors**: Menu display colors configurable at the application or menu level (exact implementation stored in record section; not fully reverse-engineered)
+- **Custom help instructions**: Support for context-sensitive help text displayed to users
+- **Custom colors**: Menu display colors configurable at the application level (exact implementation stored in record section; not fully reverse-engineered)
 - **Text-based interface**: Full DOS terminal UI with keyboard navigation
 
 ### Special Item Types
@@ -59,7 +59,7 @@ DOS Menu Works 2.10 was a sophisticated menu system for its era, offering extens
 
 ## What is MENU.MDF?
 
-**MENU.MDF** is the menu configuration data file used by DOS Menu Works 2.10, a DOS-era menu system and launcher application. Menu Works reads from MENU.MDF to populate and display a hierarchical menu system that allows users to organize and launch DOS programs and batch files.
+**MENU.MDF** is the menu configuration data file used by Menu Works. Menu Works reads from MENU.MDF to populate and display a hierarchical menu system that allows users to organize and launch DOS programs and batch files.
 
 ### Purpose
 
@@ -78,8 +78,7 @@ A MENU.MDF file contains:
 
 ### File Location
 
-Typically stored as:
-- `MENU.MDF` in the DOS Menu Works application directory or working directory
+Typically stored as `MENU.MDF` in the Menu Works application directory.
 
 ### Typical Usage
 
@@ -94,7 +93,7 @@ Typically stored as:
 
 ### Why Template-Based?
 
-Menu Works itself uses a template-based approach internally—it loads MENU.MDF files into memory, allows users to edit menu structure through the UI, and writes the modified file back. This document describes the binary format underlying that process, enabling external tools to generate MENU.MDF files programmatically without requiring Menu Works to be running.
+Menu Works itself uses a template-based approach internally - it loads MENU.MDF files into memory, allows users to edit menu structure through the UI, and writes the modified file back. This document describes the binary format underlying that process, enabling external tools to generate MENU.MDF files programmatically without requiring Menu Works to be running.
 
 ---
 
