@@ -410,7 +410,6 @@ Menu Works stores CRC/checksum protection on label and command fields, preventin
 
 ```python
 #!/usr/bin/env python3
-#!/usr/bin/env python3
 """Generate MENU.MDF with multiple items from template."""
 
 import struct
