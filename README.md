@@ -8,8 +8,6 @@ This document provides a technical specification for the binary format of `MENU.
 
 **Target Audience**: Reverse engineers and retro computing enthusiasts seeking to understand or generate Menu Works-compatible MENU.MDF files.
 
----
-
 ## Legal Disclaimer
 
 This specification is **not** official documentation and is **not affiliated** with the original DOS Menu Works 2.10 software or its creators.
