@@ -20,6 +20,43 @@ This document describes the binary format through **reverse engineering** for co
 
 **No copyright infringement intended**. This specification is provided under educational fair use principles related to interoperability and software preservation.
 
+## Features & Capabilities
+
+DOS Menu Works 2.10 was a sophisticated menu system for its era, offering extensive customization and control features:
+
+### Menu Organization
+
+- **Multiple menus**: Support for organizing items across multiple named menus, each with custom titles
+- **Nested/submenu structure**: Menus can reference other menus, enabling hierarchical navigation and complex menu trees
+- **Menu-level configuration**: Each menu maintains independent settings for display, access control, and behavior
+
+### Security & Access Control
+
+- **Password protection**: Optional password protection at the menu level, preventing unauthorized access or menu modifications
+- **Password variants**: Multiple password encoding schemes fully supported and interchangeable
+- **Authentication**: Password validation performed by Menu Works at runtime; files with protection flags cannot be modified through the UI without correct password
+
+### Item Execution & Commands
+
+- **Multiple commands per item**: Menu items can execute sequential commands (e.g., batch file → program → user prompt → control statement)
+- **Command types supported**:
+  - DOS executable commands (`.COM`, `.EXE`, `.BAT` files)
+  - Program launches with working directory specification
+  - User input prompts (interactive DOS prompts)
+- **Memory management**: Per-item configuration for conventional memory (LOW) vs. upper memory blocks (UMB/HIGH) allocation
+- **Working directory control**: Each item specifies a path from which its command(s) execute
+
+### User Interface & Customization
+
+- **Custom help instructions**: Support for context-sensitive or global help text displayed to users
+- **Custom colors**: Menu display colors configurable at the application or menu level (exact implementation stored in record section; not fully reverse-engineered)
+- **Text-based interface**: Full DOS terminal UI with keyboard navigation
+
+### Special Item Types
+
+- **Exit items**: Dedicated menu items that return to DOS or parent menu, with customizable labels
+- **Standard items**: Game/program launchers with labels, paths, and commands
+
 ## What is MENU.MDF?
 
 **MENU.MDF** is the menu configuration data file used by DOS Menu Works 2.10, a DOS-era menu system and launcher application. Menu Works reads from MENU.MDF to populate and display a hierarchical menu system that allows users to organize and launch DOS programs and batch files.
