@@ -282,7 +282,7 @@ Offset | Size | Field                | Type/Value
 
 ### EXIT Item Structure
 
-EXIT items terminate the menu and return to DOS. They differ structurally from game items:
+EXIT items terminate the menu and return to DOS. They differ structurally from program items:
 
 ```
 Offset | Size | Field              | Value
@@ -454,7 +454,7 @@ def generate_menu(template_path, output_path, menu_name, menu_title, items):
             data[item_offset + 35] = 0x02
             item_offset += 94
         else:
-            # Game item
+            # Program item
             size = 119 if idx == 0 else 114
             prefix_offset = item_offset
             data_offset = item_offset + (1 if idx == 0 else 2)
