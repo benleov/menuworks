@@ -2,13 +2,25 @@
 
 ## Overview
 
-This document provides a comprehensive technical specification for the binary format of `MENU.MDF` files used by DOS Menu Works 2.10, a DOS-era menu system and launcher application. The format has been reverse-engineered through binary analysis, structural comparison, and empirical testing across multiple file samples.
+This document provides a technical specification for the binary format of `MENU.MDF` files used by DOS [Menu Works](https://www.peteravritch.com/portfolio/menuworks21) 2.10, a DOS-era menu system and launcher application created by PC Dynamics, Inc in 1988. The format has been reverse-engineered through binary analysis, structural comparison, and empirical testing across multiple file samples.
 
 **Scope**: File header structure, record sections, menu/item data layouts, password protection, and file sizing formulas validated up to 56 menu items.
 
-**Target Audience**: Reverse engineers, DOS tool developers, and retro computing enthusiasts seeking to understand or generate Menu Works-compatible MENU.MDF files.
+**Target Audience**: Reverse engineers and retro computing enthusiasts seeking to understand or generate Menu Works-compatible MENU.MDF files.
 
 ---
+
+## Legal Disclaimer
+
+This specification is **not** official documentation and is **not affiliated** with the original DOS Menu Works 2.10 software or its creators.
+
+This document describes the binary format through **reverse engineering** for compatibility, preservation, and educational purposes only. 
+
+**Original Software**: DOS Menu Works 2.10
+**Purpose of this spec**: Enable interoperability with legacy DOS systems and retro computing environments  
+**Use case**: Educational research, software preservation, DOS emulation support
+
+**No copyright infringement intended**. This specification is provided under educational fair use principles related to interoperability and software preservation.
 
 ## What is MENU.MDF?
 
